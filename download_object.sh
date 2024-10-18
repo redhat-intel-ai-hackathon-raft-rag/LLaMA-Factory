@@ -5,7 +5,7 @@ mkdir -p dataset/raw_dataset/scraper dataset/generated_dataset &&
 {
     echo "["  # Start the JSON array
     raft_files=$(find dataset_temp/generated_dataset -name "*.json" | grep raft)
-    first=true  # Flag to manage commas
+   first=true  # Flag to manage commas
 
     for file in $raft_files; do
         if [ ! -s "$file" ]; then
@@ -13,15 +13,14 @@ mkdir -p dataset/raw_dataset/scraper dataset/generated_dataset &&
             continue  # Skip empty files
         fi
 
-        # Extract JSON array elements
+        # Extract the entire array from the first file without a leading comma
         if [ "$first" = true ]; then
             first=false  # After the first file, set the flag to false
+            jq -c '.[]' "$file"  # Output elements without adding a comma
         else
-            echo ","  # Add a comma before subsequent files
+            # For subsequent files, prepend a comma and then output elements
+            jq -c '.[]' "$file" | sed 's/^/,/g'  # Add comma at the beginning of each line
         fi
-
-        # Use jq to extract each element of the array
-        jq -c '.[]' "$file" || echo "Error processing $file"
     done
 
     echo "]"  # End the JSON array
