@@ -1,4 +1,7 @@
 {
+  "raft" : {
+    "file_name": "raft.json"
+  },
   "identity": {
     "file_name": "identity.json"
   },
