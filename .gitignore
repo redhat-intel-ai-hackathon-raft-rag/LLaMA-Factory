@@ -167,3 +167,6 @@ config/
 saves/
 output/
 wandb/
+models/
+data/raft.json
+*tar.*z
